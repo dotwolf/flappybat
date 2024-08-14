@@ -8,25 +8,25 @@ pygame.font.init()
 def clamp(n, minn, maxn): return min(max(n, minn), maxn)
 
 pygame.display.set_caption('Flappy Bat')
-Icon = pygame.image.load('bat.png')
+Icon = pygame.image.load('flap/bat.png')
 pygame.display.set_icon(Icon)
 
 width = 800
 height = 600
 
 screen = pygame.display.set_mode((width,height))
-background = pygame.image.load('background.png')
+background = pygame.image.load('flap/background.png')
 
 player = pygame.Rect((150,250,96,48))
 
-bat1 = pygame.image.load('bat1.png').convert_alpha()
-bat2 = pygame.image.load('bat2.png').convert_alpha()
+bat1 = pygame.image.load('flap/bat1.png').convert_alpha()
+bat2 = pygame.image.load('flap/bat2.png').convert_alpha()
 
 obs = [
-    pygame.image.load('obs1.png').convert_alpha(), pygame.image.load('obs2.png').convert_alpha()
+    pygame.image.load('flap/obs1.png').convert_alpha(), pygame.image.load('flap/obs2.png').convert_alpha()
 ]
 iobs = [
-    pygame.image.load('iobs1.png').convert_alpha(), pygame.image.load('iobs2.png').convert_alpha()
+    pygame.image.load('flap/iobs1.png').convert_alpha(), pygame.image.load('flap/iobs2.png').convert_alpha()
 ]
 
 starttime = time.time()
@@ -76,13 +76,13 @@ while run:
         if (time.time() - t) > 0.3:
             jumping = False
             lastjump = time.time()
-        elif player.top > 0 and current_frame >= (round((time.time() - t)*40)):
+        elif player.top > 0 and current_frame >= (round((time.time() - t)*10)):
             player.move_ip(0,-1)
             current_frame = 0
         else:
             current_frame += 1
     else:
-        if player.bottom < height and bat_frame % 2 == 0 and current_frame >= 3-clamp(round((time.time() - lastjump)*3),0,2):
+        if player.bottom < height and bat_frame % 2 == 0: #and current_frame >= clamp(round((time.time() - lastjump)),0,2):
             player.move_ip(0,1)
             current_frame = 0
         else:
@@ -118,7 +118,7 @@ while run:
             screen.blit(iobs[obstacles[x][1]], (obstacles[x][0].x,obstacles[x][0].y))
         else:
             screen.blit(obs[obstacles[x][1]], (obstacles[x][0].x,obstacles[x][0].y))
-        if bat_frame % 3 == 0:
+        if bat_frame % 2 == 0:
             obstacles[x][0].move_ip(-1,0)
 
         if obstacles[x][0].x == 100 and time.time() - lastpoint >= 1.2:
